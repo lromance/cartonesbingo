@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartones de Bingo Personalizables</title>
+    <style>
+        /* Fuente Inter para una mejor legibilidad */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: #1f2937;
+            padding: 24px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 32px;
+            padding-bottom: 32px;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        /* Estilos para el nuevo título pequeño */
+        .small-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        /* Estilos para la descripción pequeña */
+        .small-description {
+            font-size: 0.875rem;
+            color: #4b5563;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        /* Estilos para el copyright */
+        .copyright-text {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        /* Sección de entrada de rango */
+        #rangeInputSection {
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 24px;
+            margin-bottom: 48px;
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #rangeInputSection label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 1rem;
+        }
+
+        #rangeInputSection input[type="number"] {
+            width: calc(50% - 10px); /* Ajuste para dos inputs en una línea */
+            padding: 10px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            box-sizing: border-box; /* Asegura que padding y border no aumenten el width */
+        }
+        #rangeInputSection input[type="number"]:first-of-type {
+            margin-right: 10px; /* Espacio entre los dos inputs */
+        }
+        #rangeInputSection button {
+            width: 100%;
+            background-color: #2563eb;
+            color: white;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
+        }
+        #rangeInputSection button:hover {
+            background-color: #1d4ed8;
+            transform: scale(1.02);
+        }
+        #rangeInputSection .error-message {
+            color: #dc2626; /* text-red-600 */
+            font-size: 0.875rem;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 48px;
+            gap: 16px;
+        }
+
+        /* Estilos de botón */
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            transform: scale(1.05);
+        }
+
+        .btn-primary:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-print {
+            background-color: #16a34a;
+            color: white;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-print:hover {
+            background-color: #15803d;
+            transform: scale(1.05);
+        }
+
+        .btn-print:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.5);
+        }
+
+        /* Contenedor de cartones */
+        #bingoCardsContainer {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 32px;
+            width: 100%;
+            max-width: 768px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            #bingoCardsContainer {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                max-width: 100%;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #bingoCardsContainer {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 100%;
+            }
+        }
+
+        /* Estilos para el cartón de bingo individual */
+        .bingo-card-container {
+            margin-bottom: 16px;
+        }
+
+        .bingo-card {
+            background-color: #fff;
+            border: 1px solid #9ca3af;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            border-top: none;
+            border-left: none;
+        }
+
+        .bingo-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 16px 8px;
+            border-top: 1px solid #d1d5db;
+            border-left: 1px solid #d1d5db;
+            min-width: 60px;
+            height: 60px;
+            box-sizing: border-box;
+        }
+
+        .bingo-card > .bingo-cell {
+            border-bottom: 1px solid #d1d5db;
+            border-right: 1px solid #d1d5db;
+        }
+
+        .empty-cell {
+            background-color: #e5e7eb;
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        /* Estilos para impresión */
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+                margin: 0;
+            }
+            .no-print {
+                display: none; /* Oculta elementos con esta clase al imprimir */
+            }
+            .container {
+                padding: 0;
+                margin: 0 auto;
+            }
+            .small-title, .small-description, .copyright-text {
+                display: block;
+                text-align: center;
+                margin-bottom: 3px;
+                font-size: 0.8rem;
+                color: #000;
+            }
+            .small-description {
+                margin-bottom: 15px; /* Separación entre descripción y cartones */
+            }
+            .copyright-text {
+                margin-top: 8px;
+                font-size: 0.65rem;
+            }
+            .bingo-card-container {
+                display: block;
+                margin: 0 auto 8px auto;
+                page-break-inside: avoid;
+            }
+            #bingoCardsContainer {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                max-width: none;
+                margin: 0 auto;
+            }
+            .bingo-card {
+                box-shadow: none;
+                border: 1px solid #9ca3af;
+                width: auto;
+                font-size: 1.1rem;
+            }
+            .bingo-cell {
+                border: 1px solid #9ca3af;
+                font-size: 1.1rem;
+                height: 60px;
+                min-width: 60px;
+                padding: 5px;
+            }
+            .empty-cell {
+                background-color: #e5e7eb !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                color: #9ca3af;
+                font-style: italic;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Título y descripción con letra pequeña -->
+        <h1 class="small-title">Generador de Cartones de Bingo</h1>
+        <p class="small-description" id="bingoDescription">Cartones de Bingo con 3 líneas, 7 columnas, 5 espacios vacíos y números del 1 al 99. Diseñados para impresión en DIN A4 horizontal.</p>
+
+        <!-- Sección para la entrada de rango de números -->
+        <div id="rangeInputSection" class="no-print">
+            <label for="minNumberInput">Cifra mínima:</label>
+            <input type="number" id="minNumberInput" value="1" min="1" max="99" aria-label="Cifra mínima">
+            <label for="maxNumberInput">Cifra máxima:</label>
+            <input type="number" id="maxNumberInput" value="99" min="1" max="99" aria-label="Cifra máxima">
+            <div id="rangeError" class="error-message" style="display:none;"></div>
+            <button id="setRangeBtn">Establecer Rango y Generar</button>
+        </div>
+
+        <!-- Contenido principal: Botones y Cartones (inicialmente oculto) -->
+        <div id="mainContent" style="display: none;">
+            <div class="controls no-print">
+                <button id="generateCardsBtn" class="btn-primary">Generar Nuevos Cartones (x6)</button>
+                <button onclick="window.print()" class="btn-print">Imprimir Cartones</button>
+            </div>
+
+            <div id="bingoCardsContainer">
+                <!-- Los cartones de bingo se insertarán aquí -->
+            </div>
+        </div>
+
+        <!-- Copyright con letra aún más pequeña -->
+        <p class="copyright-text no-print">
+            &copy; <span id="currentYear"></span> Luis Romance, docent a <a href="https://www.cfalapau.cat" target="_blank">www.cfalapau.cat</a>
+        </p>
+    </div>
+
+    <script>
+        let currentMin = 1;
+        let currentMax = 99;
+
+        // Función para generar un número aleatorio dentro de un rango
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Función para obtener 'count' números únicos de un array
+        function getUniqueRandomNumbers(arr, count) {
+            const shuffled = arr.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        // Función para generar un solo cartón de bingo con el rango actual
+        function generateBingoCard() {
+            const card = Array(3).fill(null).map(() => Array(7).fill(null)); // Matriz 3x7 para el cartón
+
+            const totalRangeSize = currentMax - currentMin + 1;
+            const numbersPerColumnBase = Math.floor(totalRangeSize / 7);
+            let remainingNumbersToDistribute = totalRangeSize % 7;
+
+            const columnRanges = [];
+            let currentColumnMin = currentMin;
+
+            for (let c = 0; c < 7; c++) {
+                let columnMax;
+                let currentColumnSize = numbersPerColumnBase;
+
+                if (remainingNumbersToDistribute > 0) {
+                    currentColumnSize++;
+                    remainingNumbersToDistribute--;
+                }
+
+                if (c === 6) { // Para la última columna, asegurar que llegue hasta currentMax
+                    columnMax = currentMax;
+                } else {
+                    columnMax = currentColumnMin + currentColumnSize - 1;
+                }
+
+                columnRanges.push({ min: currentColumnMin, max: columnMax });
+                currentColumnMin = columnMax + 1;
+            }
+
+            const allPossibleCells = []; // Almacena todas las coordenadas [fila, columna]
+            for (let r = 0; r < 3; r++) {
+                for (let c = 0; c < 7; c++) {
+                    allPossibleCells.push([r, c]);
+                }
+            }
+
+            // Paso 1: Generar 3 números únicos por columna y colocarlos inicialmente en el cartón
+            for (let c = 0; c < 7; c++) {
+                const uniqueNumbersInColumn = new Set();
+                const possibleNumbersInColumn = [];
+                for (let i = columnRanges[c].min; i <= columnRanges[c].max; i++) {
+                    possibleNumbersInColumn.push(i);
+                }
+
+                // Si la columna no tiene suficientes números posibles, toma los que haya
+                const numbersToPick = Math.min(3, possibleNumbersInColumn.length);
+
+                if (numbersToPick > 0) {
+                    const shuffledColumnNumbers = possibleNumbersInColumn.sort(() => 0.5 - Math.random());
+                    for (let i = 0; i < numbersToPick; i++) {
+                        uniqueNumbersInColumn.add(shuffledColumnNumbers[i]);
+                    }
+                }
+
+                const sortedNumbers = Array.from(uniqueNumbersInColumn).sort((a, b) => a - b);
+                for (let r = 0; r < 3; r++) {
+                    card[r][c] = sortedNumbers[r] !== undefined ? sortedNumbers[r] : null; // Asigna null si no hay suficientes números
+                }
+            }
+
+            // Paso 2: Seleccionar 5 celdas para que estén vacías
+            // Primero, identificar qué celdas NO son null para asegurar que se eligen de las que tienen número
+            const filledCellCoordinates = [];
+            for (let r = 0; r < 3; r++) {
+                for (let c = 0; c < 7; c++) {
+                    if (card[r][c] !== null) {
+                        filledCellCoordinates.push([r, c]);
+                    }
+                }
+            }
+
+            const emptyCellCoordinates = getUniqueRandomNumbers(filledCellCoordinates, 5);
+
+
+            // Paso 3: Vaciar las celdas seleccionadas
+            emptyCellCoordinates.forEach(([r, c]) => {
+                card[r][c] = null; // Establecer a null para indicar que está vacía
+            });
+
+            return card;
+        }
+
+        // Función para renderizar un cartón en HTML
+        function renderBingoCard(cardData) {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'bingo-card-container';
+            cardDiv.innerHTML = `
+                <div class="bingo-card">
+                    ${cardData.map(row =>
+                        row.map(cell => `
+                            <div class="bingo-cell ${cell === null ? 'empty-cell' : ''}">
+                                ${cell === null ? '' : cell}
+                            </div>
+                        `).join('')
+                    ).join('')}
+                </div>
+            `;
+            return cardDiv;
+        }
+
+        // Función para generar y mostrar múltiples cartones
+        function generateAndDisplayCards(numCards = 6) {
+            const container = document.getElementById('bingoCardsContainer');
+            container.innerHTML = ''; // Limpiar cartones existentes
+
+            const generatedCards = new Set();
+            let cardsCount = 0;
+
+            while (cardsCount < numCards) {
+                const newCard = generateBingoCard();
+                const cardString = JSON.stringify(newCard);
+
+                if (!generatedCards.has(cardString)) {
+                    generatedCards.add(cardString);
+                    container.appendChild(renderBingoCard(newCard));
+                    cardsCount++;
+                }
+            }
+        }
+
+        // Lógica para el botón "Establecer Rango y Generar"
+        document.getElementById('setRangeBtn').addEventListener('click', () => {
+            const minInput = document.getElementById('minNumberInput');
+            const maxInput = document.getElementById('maxNumberInput');
+            const errorMessage = document.getElementById('rangeError');
+
+            const minVal = parseInt(minInput.value);
+            const maxVal = parseInt(maxInput.value);
+
+            // Validación de los números
+            if (isNaN(minVal) || isNaN(maxVal) || minVal < 1 || maxVal > 99 || minVal > maxVal) {
+                errorMessage.textContent = 'Por favor, introduce un rango válido (mínimo 1, máximo 99, y mínimo no mayor que máximo).';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // Validación adicional para asegurar que hay suficientes números para generar el cartón
+            // Un cartón necesita 3 * 7 = 21 celdas, pero 5 vacías, así que 16 números.
+            if ((maxVal - minVal + 1) < 16) {
+                errorMessage.textContent = `El rango de números (${minVal}-${maxVal}) es demasiado pequeño para generar un cartón válido (se necesitan al menos 16 números).`;
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            errorMessage.style.display = 'none'; // Ocultar mensaje de error si la validación es exitosa
+
+            currentMin = minVal;
+            currentMax = maxVal;
+
+            // Actualizar la descripción con el rango seleccionado
+            document.getElementById('bingoDescription').textContent = `Cartones de Bingo con 3 líneas, 7 columnas, 5 espacios vacíos y números del ${currentMin} al ${currentMax}. Diseñados para impresión en DIN A4 horizontal.`;
+
+
+            document.getElementById('rangeInputSection').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+
+            generateAndDisplayCards(6);
+        });
+
+        // Event listener para el botón "Generar Nuevos Cartones" (ahora dentro de mainContent)
+        document.getElementById('generateCardsBtn').addEventListener('click', () => {
+            generateAndDisplayCards(6);
+        });
+
+        // Generar el año actual para el copyright
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+        });
+
+        // Al cargar la página, no se generan cartones hasta que se establezca el rango.
+        // Solo se muestra la sección de entrada de rango.
+        window.onload = () => {
+            document.getElementById('rangeInputSection').style.display = 'block';
+            document.getElementById('mainContent').style.display = 'none';
+        };
+    </script>
+</body>
+</html>
