@@ -4,3 +4,6 @@ Para cambiar el rango hay que volver a cargar el documento.
 Se puede bajar el archivo y abrir desde el navegador. Funciona sin archivos auxiliares y no necesita conexión.
 
 Enlace para entrar a la herramienta: <a href="https://lromance.github.io/cartonesbingo/bingo_cards_range.html">https://lromance.github.io/cartonesbingo/bingo_cards_range.html</a>
+
+Enlace para los cartones del quinto: <a href="https://lromance.github.io/cartonesbingo/quintos.html">https://lromance.github.io/cartonesbingo/bingo_cards_range.html</a>
+
